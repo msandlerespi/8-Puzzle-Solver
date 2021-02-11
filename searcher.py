@@ -8,25 +8,44 @@ class Searcher():
         self.frontier = PriorityQueue()
         self.explored = {}
     def expand(self, state):
-        """ expand method
-        state: state being expanded (EightPuzzleBoard) 
-        return: list of neighboring states (list)
+        """ Expand method
+
+        Args:
+            state: EightPuzzleBoard (state being expanded)
+        Returns: 
+            list (list of neighboring states)
         """
         pass
     def get_heuristic(self, state, type):
-        """ heuristic function
-        state: the state that will get its heuristic calculated (EightPuzzleBoard)
-        type: "h1" | "h2" | "h3"
-        return: heuristic value (int)
+        """ Heuristic function
+        
+        Args:
+            state: EightPuzzleBoard (the state that will get its heuristic calculated)
+            type: "h1" | "h2" | "h3"
+        Returns: 
+            int (heuristic value)
         """
         pass
     def get_weight(self, state):
-        """ weight function
-        state: the state that will get its weight calculated (EightPuzzleBoard)
-        return: weight value (int)
+        """ Weight function
+
+        Args:
+            state: EightPuzzleBoard (the state that will get its weight calculated) 
+        Returns:
+            int (weight value)
         """
         pass
-    def findSolution(self):
+    def find_solution(self):
+        """ Solution method
+
+        Returns 
+            results = {
+                'path': [],
+                'path_cost': 0,
+                'frontier_count': 0,
+                'expanded_count': 0,
+                }
+        """
         pass
 
 class BFS(Searcher):
