@@ -63,6 +63,6 @@ class PriorityQueue:
         rets = []
         while len(burn_heap) > 0:
             p, c, t = heapq.heappop(burn_heap)
-            if t != self.REMOVED:
+            if str(t) != self.REMOVED:
                 rets.append("{}: {}".format(p, t))
         return ", ".join(rets)
