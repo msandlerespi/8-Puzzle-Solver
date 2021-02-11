@@ -7,7 +7,7 @@ class Searcher():
         self.goal_state = goal_state
         self.frontier = PriorityQueue()
         self.explored = {}
-    def expand(self, state):
+    def _expand(self, state):
         """ Expand method
 
         Args:
@@ -15,8 +15,9 @@ class Searcher():
         Returns: 
             list (list of neighboring states)
         """
-        pass
-    def get_heuristic(self, state, type):
+        
+
+    def _get_heuristic(self, state, type):
         """ Heuristic function
         
         Args:
@@ -26,7 +27,7 @@ class Searcher():
             int (heuristic value)
         """
         pass
-    def get_weight(self, state):
+    def _get_weight(self, state):
         """ Weight function
 
         Args:
@@ -35,7 +36,7 @@ class Searcher():
             int (weight value)
         """
         pass
-    def find_solution(self):
+    def BFS_solution(self):
         """ Solution method
 
         Returns 
@@ -47,12 +48,39 @@ class Searcher():
                 }
         """
         pass
+    def UCS_solution(self):
+        """ Solution method
 
-class BFS(Searcher):
-    pass
-class UCS(Searcher):
-    pass
-class Greedy(Searcher):
-    pass
-class Astar(Searcher):
-    pass
+        Returns 
+            results = {
+                'path': [],
+                'path_cost': 0,
+                'frontier_count': 0,
+                'expanded_count': 0,
+                }
+        """
+        pass
+    def Greedy_solution(self):
+        """ Solution method
+
+        Returns 
+            results = {
+                'path': [],
+                'path_cost': 0,
+                'frontier_count': 0,
+                'expanded_count': 0,
+                }
+        """
+        pass
+    def Astar_solution(self):
+        """ Solution method
+
+        Returns 
+            results = {
+                'path': [],
+                'path_cost': 0,
+                'frontier_count': 0,
+                'expanded_count': 0,
+                }
+        """
+        pass
