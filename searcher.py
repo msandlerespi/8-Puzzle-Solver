@@ -15,8 +15,7 @@ class Searcher():
         Returns: 
             list (list of neighboring states)
         """
-        
-
+        pass
     def _get_heuristic(self, state, type):
         """ Heuristic function
         
@@ -24,9 +23,31 @@ class Searcher():
             state: EightPuzzleBoard (the state that will get its heuristic calculated)
             type: "h1" | "h2" | "h3"
         Returns: 
-            int (heuristic value)
+            int (heuristic value) | None (if type is invalid)
         """
-        pass
+        assert type == "h1" or type == "h2" or type == "h3", "Invalid Heuristic Type"
+        heuristic = 0
+        if type == "h1":
+        #h1 = # of misplaced tiles
+            for i in range(10):
+            # Goes through 0-9 and compares the position of that number on the state arg vs the goal state (if it matches, then the heuristic value increments by 1)
+                if self.goal_state.find(i) == state.find(i):
+                    heuristic += 1
+        elif type == "h2":
+        #h2 = the sum of the distances of the tiles from their goal positions
+            for i in range (10):
+            # Goes through 0-9 and subtracts the coordinates of the state arg with the coordinates of the goal state (then adds the difference to the heuristic value) 
+                goal_coor = self.goal_state.find(i)
+                state_coor = state.find(i)
+                heuristic += abs(state_coor[0] - goal_coor[0]) + abs(state_coor[1] - goal_coor[1])
+        else:
+        #h3 = modified version of h2 (takes into account transition costs)
+            for i in range (10):
+                # Same has h2, but multiplies the difference by i^2 before adding it to the heuristic value
+                goal_coor = self.goal_state.find(i)
+                state_coor = state.find(i)
+                heuristic += i * i * (abs(state_coor[0] - goal_coor[0]) + abs(state_coor[1] - goal_coor[1]))
+        return heuristic
     def _get_weight(self, state):
         """ Weight function
 
