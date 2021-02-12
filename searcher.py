@@ -43,7 +43,7 @@ class Searcher():
         else:
         #h3 = modified version of h2 (takes into account transition costs)
             for i in range (10):
-                # Same has h2, but multiplies the difference by i^2 before adding it to the heuristic value
+            # Same has h2, but multiplies the difference by i^2 before adding it to the heuristic value
                 goal_coor = self.goal_state.find(i)
                 state_coor = state.find(i)
                 heuristic += i * i * (abs(state_coor[0] - goal_coor[0]) + abs(state_coor[1] - goal_coor[1]))
