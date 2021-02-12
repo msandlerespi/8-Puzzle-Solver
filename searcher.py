@@ -105,3 +105,32 @@ class Searcher():
                 }
         """
         pass
+class State:
+    def __init__(self, current, previous, cost):
+        self.current = current
+        self.previous = previous
+        self.cost = cost
+    
+    def _continue_pathfinder(working_path):
+        updated_path = {
+            'path': working_path['path'].append(self.current),
+            'path_cost': working_path['path_cost'] + self.cost,
+            'frontier_count': working_path['frontier_count'],
+            'expanded_count': working_path['expanded_count']
+        }
+        if(self.previous == None):
+            return updated_path
+        else:
+            return self.previous._continue_pathfinder(updated_path)
+    
+    def _start_pathfinder(frontier_count, expanded_count):
+        updated_path = {
+            'path': [self.current],
+            'path_cost': self.cost,
+            'frontier_count': frontier_count,
+            'expanded_count': expanded_count
+        }
+        if(self.previous == None):
+            return updated_path
+        else:
+            return self.previous._continue_pathfinder(updated_path)
