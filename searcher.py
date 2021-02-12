@@ -30,8 +30,8 @@ class Searcher():
         if type == "h1":
         #h1 = # of misplaced tiles
             for i in range(10):
-            # Goes through 0-9 and compares the position of that number on the state arg vs the goal state (if it matches, then the heuristic value increments by 1)
-                if self.goal_state.find(i) == state.find(i):
+            # Goes through 0-9 and compares the position of that number on the state arg vs the goal state (if it doesnt match, then the heuristic value increments by 1)
+                if self.goal_state.find(i) != state.find(i):
                     heuristic += 1
         elif type == "h2":
         #h2 = the sum of the distances of the tiles from their goal positions
