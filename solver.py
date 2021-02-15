@@ -24,8 +24,10 @@ def solve_puzzle(start_state, strategy):
     
     Returns: 
         A dictionary containing describing the search performed, containing the following entries:
-            'path' - a list of EightPuzzleBoard objects indicating the path from the start state 
-                to the goal state (both should be included).  Omitted if the search fails.
+            'path' - a list of 2-tuples representing the path from the start state to the goal state 
+                (both should be included), with each entry being a (str, EightPuzzleBoard) pair 
+                indicating the move and resulting state for each action.  Omitted if the search 
+                fails.
             'path_cost' - the total cost of the path, taking into account the costs associated 
                 with each state transition.  Omitted if the search fails.
             'frontier_count' - the number of unique states added to the search frontier at any
