@@ -6,16 +6,8 @@ class Searcher():
         self.start_state = start_state
         self.goal_state = goal_state
         self.frontier = PriorityQueue()
-        self.explored = {}
-    def _expand(self, state):
-        """ Expand method
-
-        Args:
-            state: EightPuzzleBoard (state being expanded)
-        Returns: 
-            list (list of neighboring states)
-        """
-        pass
+        self.frontier_count = 0
+        self.explored = set()
     def _get_heuristic(self, state, type):
         """ Heuristic function
         
@@ -68,7 +60,19 @@ class Searcher():
                 'expanded_count': 0,
                 }
         """
-        pass
+        self.frontier.add(self.start_state)
+        self.frontier_count += 1
+
+        while not len(self.frontier != 0):
+            state = self.frontier.pop()
+            self.explored.add(state)
+            for s in state.successors():
+                if (s not in self.frontier) and (s not in self.explored):
+                    if s == self.goal_state:
+                        assert(True, "solution found")
+                    else:
+                        self.frontier.add(s)
+        return None
     def UCS_solution(self):
         """ Solution method
 
