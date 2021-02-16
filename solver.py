@@ -66,7 +66,10 @@ def print_summary(results):
         print("found solution of length {}, cost {}".format(len(results['path']), 
                                                             results['path_cost']))
         for move, state in results['path']:
-            print("  {:5} {}".format(move, state))
+            # print("  {:5} {}".format(move, state))
+            print(move)
+            print(state.pretty())
+            print()
     else:
         print("no solution found")
     print("{} states placed on frontier, {} states expanded".format(results['frontier_count'], 
