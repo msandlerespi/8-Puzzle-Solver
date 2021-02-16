@@ -1,7 +1,7 @@
 import sys
 import puzz
 import pdqpq
-
+from searcher import Searcher
 
 MAX_SEARCH_ITERS = 100000
 GOAL_STATE = puzz.EightPuzzleBoard("012345678")
@@ -35,17 +35,30 @@ def solve_puzzle(start_state, strategy):
             'expanded_count' - the number of unique states removed from the frontier and expanded 
                 (successors generated).
     """
+    search_obj = Searcher(start_state, goal_state=GOAL_STATE)
+    if strategy == 'bfs':
+        return search_obj.BFS_solution()    
+    elif strategy == 'ucost':
+        return search_obj.UCS_solution()
+    elif strategy == 'greedy-h1':
+        return search_obj.Greedy_solution(type='h1')
+    elif strategy == 'greedy-h2':
+        return search_obj.Greedy_solution(type='h2')
+    elif strategy == 'greedy-h3':
+        return search_obj.Greedy_solution(type='h3')
+    elif strategy == 'astar-h1':
+        return search_obj.Astar_solution(type='h1')
+    elif strategy == 'astar-h2':
+        return search_obj.Astar_solution(type='h2')
+    elif strategy == 'astar-h3':
+        return search_obj.Astar_solution(type='h3')
+    else:
+        print("strategy not found")
 
-    results = {
-        'path': [],
-        'path_cost': 0,
-        'frontier_count': 0,
-        'expanded_count': 0,
-    }
-    # 
-    # fill in the function body here
-    #
-    return results
+
+
+
+
 
 
 def print_summary(results):
