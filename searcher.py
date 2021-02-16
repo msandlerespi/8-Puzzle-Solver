@@ -92,9 +92,10 @@ class Searcher():
                 'expanded_count': 0,
                 }
         """
-        self.frontier.add(self.start_state)
+        priority_num = 0
+        self.frontier.add(self.start_state, priority=priority_num)
         self.frontier_count += 1
-
+        
         while len(self.frontier) != 0:
             state = self.frontier.pop()
             self.explored_set.add(state)
@@ -105,8 +106,8 @@ class Searcher():
                         self.predecessor_dict[successor[1]] = (successor[0], state)
                         return self._get_result()
                     else:
-                        successor[1].pretty()
-                        self.frontier.add(successor[1])
+                        priority_num += 1
+                        self.frontier.add(successor[1], priority=priority_num)
                         self.predecessor_dict[successor[1]] = (successor[0], state)
                         self.frontier_count += 1
         return {'frontier_count' : self.frontier_count, 'expanded_count' : len(self.explored_set)}
