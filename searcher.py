@@ -92,10 +92,9 @@ class Searcher():
                 'expanded_count': 0,
                 }
         """
-        priority_num = 0
-        self.frontier.add(self.start_state, priority=priority_num)
+        self.frontier.add(self.start_state)
         self.frontier_count += 1
-        
+
         while len(self.frontier) != 0:
             state = self.frontier.pop()
             self.explored_set.add(state)
@@ -106,8 +105,8 @@ class Searcher():
                         self.predecessor_dict[successor[1]] = (successor[0], state)
                         return self._get_result()
                     else:
-                        priority_num += 1
-                        self.frontier.add(successor[1], priority=priority_num)
+                        successor[1].pretty()
+                        self.frontier.add(successor[1])
                         self.predecessor_dict[successor[1]] = (successor[0], state)
                         self.frontier_count += 1
         return {'frontier_count' : self.frontier_count, 'expanded_count' : len(self.explored_set)}
@@ -151,32 +150,3 @@ class Searcher():
                 }
         """
         pass
-class State:
-    def __init__(self, current, previous, cost):
-        self.current = current
-        self.previous = previous
-        self.cost = cost
-    
-    def _continue_pathfinder(working_path):
-        updated_path = {
-            'path': working_path['path'].append(self.current),
-            'path_cost': working_path['path_cost'] + self.cost,
-            'frontier_count': working_path['frontier_count'],
-            'expanded_count': working_path['expanded_count']
-        }
-        if(self.previous == None):
-            return updated_path
-        else:
-            return self.previous._continue_pathfinder(updated_path)
-    
-    def _start_pathfinder(frontier_count, expanded_count):
-        updated_path = {
-            'path': [self.current],
-            'path_cost': self.cost,
-            'frontier_count': frontier_count,
-            'expanded_count': expanded_count
-        }
-        if(self.previous == None):
-            return updated_path
-        else:
-            return self.previous._continue_pathfinder(updated_path)
