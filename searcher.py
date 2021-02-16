@@ -54,7 +54,7 @@ class Searcher():
         coors = predecessor.find("0")
         tile_moved = int(successor._get_tile(coors[0], coors[1]))
         return tile_moved * tile_moved
-    def _BFS_path(self):
+    def _get_result(self):
         """ Path function 
         Returns:
            {
@@ -73,6 +73,7 @@ class Searcher():
             path.append(previous_node) # tuple(str of the move that it took to get to cur_node, cur_node)
             path_cost += self._get_cost(predecessor_info[1], cur_node)
             cur_node = predecessor_info[1]
+        path.append(("", cur_node))
         path.reverse()
         return {
             'path': path,
@@ -98,11 +99,11 @@ class Searcher():
             state = self.frontier.pop()
             self.explored_set.add(state)
             for successor in state.successors().items():
-            # suc is a successor tuple in the form (move: str, successor: EightBoardPuzzle)
+            # successor is tuple in the form (move: str, successor: EightBoardPuzzle)
                 if (successor[1] not in self.frontier) and (successor[1] not in self.explored_set):
                     if successor[1] == self.goal_state:
                         self.predecessor_dict[successor[1]] = (successor[0], state)
-                        return self._BFS_path()
+                        return self._get_result()
                     else:
                         successor[1].pretty()
                         self.frontier.add(successor[1])
