@@ -7,7 +7,10 @@ class Searcher():
         self.goal_state = goal_state
         self.frontier = PriorityQueue()
         self.frontier_count = 0
-        self.explored = set()
+        self.explored_set = set()
+        # dictionary mapping a parent state to a tuple of the form: (str: move that it took to get to the key, EightPuzzleBoard: the state before it)
+        # {parent_state: ("up | down | left | right", child_state)}
+        self.predecessor_dict = {} 
     def _get_heuristic(self, state, type):
         """ Heuristic function
         
@@ -40,15 +43,43 @@ class Searcher():
                 state_coor = state.find(i)
                 heuristic += i * i * (abs(state_coor[0] - goal_coor[0]) + abs(state_coor[1] - goal_coor[1]))
         return heuristic
-    def _get_weight(self, state):
-        """ Weight function
+    def _get_cost(self, predecessor, successor):
+        """ Cost function -> calculates cost between a predeccessor and its successor
 
         Args:
             state: EightPuzzleBoard (the state that will get its weight calculated) 
         Returns:
             int (weight value)
         """
-        pass
+        coors = predecessor.find("0")
+        tile_moved = int(successor._get_tile(coors[0], coors[1]))
+        return tile_moved * tile_moved
+    def _BFS_path(self):
+        """ Path function 
+        Returns:
+           {
+            'path': [],
+            'path_cost': 0,
+            'frontier_count': 0,
+            'expanded_count': 0,
+           }
+        """
+        path = []
+        path_cost = 0
+        cur_node = self.goal_state
+        while cur_node != self.start_state: 
+            predecessor_info = self.predecessor_dict.get(cur_node) # tuple(str of the move that it took to get to cur_node, EightPuzzleBoard of the state that came before it)
+            previous_node = (predecessor_info[0], cur_node) 
+            path.append(previous_node) # tuple(str of the move that it took to get to cur_node, cur_node)
+            path_cost += self._get_cost(predecessor_info[1], cur_node)
+            cur_node = predecessor_info[1]
+        path.reverse()
+        return {
+            'path': path,
+            'path_cost': path_cost,
+            'frontier_count': self.frontier_count,
+            'expanded_count': len(self.explored_set),
+           }
     def BFS_solution(self):
         """ Solution method
 
@@ -63,16 +94,21 @@ class Searcher():
         self.frontier.add(self.start_state)
         self.frontier_count += 1
 
-        while not len(self.frontier != 0):
+        while len(self.frontier) != 0:
             state = self.frontier.pop()
-            self.explored.add(state)
-            for s in state.successors():
-                if (s not in self.frontier) and (s not in self.explored):
-                    if s == self.goal_state:
-                        assert(True, "solution found")
+            self.explored_set.add(state)
+            for successor in state.successors().items():
+            # suc is a successor tuple in the form (move: str, successor: EightBoardPuzzle)
+                if (successor[1] not in self.frontier) and (successor[1] not in self.explored_set):
+                    if successor[1] == self.goal_state:
+                        self.predecessor_dict[successor[1]] = (successor[0], state)
+                        return self._BFS_path()
                     else:
-                        self.frontier.add(s)
-        return None
+                        successor[1].pretty()
+                        self.frontier.add(successor[1])
+                        self.predecessor_dict[successor[1]] = (successor[0], state)
+                        self.frontier_count += 1
+        return {'frontier_count' : self.frontier_count, 'expanded_count' : len(self.explored_set)}
     def UCS_solution(self):
         """ Solution method
 
@@ -85,9 +121,11 @@ class Searcher():
                 }
         """
         pass
-    def Greedy_solution(self):
+    def Greedy_solution(self, type):
         """ Solution method
-
+        
+        Args
+            type = 'h1' | 'h2' | 'h3'
         Returns 
             results = {
                 'path': [],
@@ -97,9 +135,11 @@ class Searcher():
                 }
         """
         pass
-    def Astar_solution(self):
+    def Astar_solution(self, type):
         """ Solution method
-
+         
+        Args
+            type = 'h1' | 'h2' | 'h3'
         Returns 
             results = {
                 'path': [],
