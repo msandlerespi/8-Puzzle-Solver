@@ -11,24 +11,24 @@ class Searcher():
         # dictionary mapping a parent state to a tuple of the form: (str: move that it took to get to the key, EightPuzzleBoard: the state before it)
         # {parent_state: ("up | down | left | right", child_state)}
         self.predecessor_dict = {} 
-    def _get_heuristic(self, state, type):
+    def _get_heuristic(self, state, h):
         """ Heuristic function
         
         Args:
             state: EightPuzzleBoard (the state that will get its heuristic calculated)
-            type: "h1" | "h2" | "h3"
+            h: "h1" | "h2" | "h3"
         Returns: 
-            int (heuristic value) | None (if type is invalid)
+            int (heuristic value) | None (if h is invalid)
         """
-        assert type == "h1" or type == "h2" or type == "h3", "Invalid Heuristic Type"
+        assert h == "h1" or h == "h2" or h == "h3", "Invalid Heuristic h"
         heuristic = 0
-        if type == "h1":
+        if h == "h1":
         #h1 = # of misplaced tiles
             for i in range(10):
             # Goes through 0-9 and compares the position of that number on the state arg vs the goal state (if it doesnt match, then the heuristic value increments by 1)
                 if self.goal_state.find(i) != state.find(i):
                     heuristic += 1
-        elif type == "h2":
+        elif h == "h2":
         #h2 = the sum of the distances of the tiles from their goal positions
             for i in range (10):
             # Goes through 0-9 and subtracts the coordinates of the state arg with the coordinates of the goal state (then adds the difference to the heuristic value) 
@@ -123,11 +123,11 @@ class Searcher():
                 }
         """
         pass
-    def Greedy_solution(self, type):
+    def Greedy_solution(self, h):
         """ Solution method
         
         Args
-            type = 'h1' | 'h2' | 'h3'
+            h = 'h1' | 'h2' | 'h3'
         Returns 
             results = {
                 'path': [],
@@ -136,12 +136,28 @@ class Searcher():
                 'expanded_count': 0,
                 }
         """
-        pass
-    def Astar_solution(self, type):
+        self.frontier.add(self.start_state, priority=priority_num)
+        self.frontier_count += 1
+
+        while len(self.frontier) != 0:
+            state = self.frontier.pop()
+            self.explored_set.add(state)
+            for successor in state.successors().items():
+            # successor is tuple in the form (move: str, successor: EightBoardPuzzle)
+                if (successor[1] not in self.explored_set):
+                    if successor[1] == self.goal_state:
+                        self.predecessor_dict[successor[1]] = (successor[0], state)
+                        return self._get_result()
+                    else:
+                        self.frontier.add(successor[1], priority=self._get_heuristic(successor[1], h))
+                        self.predecessor_dict[successor[1]] = (successor[0], state)
+                        self.frontier_count += 1
+        return {'frontier_count' : self.frontier_count, 'expanded_count' : len(self.explored_set)}
+    def Astar_solution(self, h):
         """ Solution method
          
         Args
-            type = 'h1' | 'h2' | 'h3'
+            h = 'h1' | 'h2' | 'h3'
         Returns 
             results = {
                 'path': [],
