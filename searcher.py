@@ -51,7 +51,7 @@ class Searcher():
         Returns:
             int (weight value)
         """
-        coors = predecessor.find("0")
+        coors = predecessor.find("0") # (x ,y)
         tile_moved = int(successor._get_tile(coors[0], coors[1]))
         return tile_moved * tile_moved
     def _get_result(self):
@@ -73,6 +73,7 @@ class Searcher():
             path.append(previous_node) # tuple(str of the move that it took to get to cur_node, cur_node)
             path_cost += self._get_cost(predecessor_info[1], cur_node)
             cur_node = predecessor_info[1]
+        path_cost += self._get_cost(self.predecessor_dict.get(cur_node)[1], cur_node) 
         path.append(("", cur_node))
         path.reverse()
         return {
@@ -122,8 +123,8 @@ class Searcher():
                 'expanded_count': 0,
                 }
         """
-        pass
-    def Greedy_solution(self, h):
+        
+    def Greedy_solution(self, type):
         """ Solution method
         
         Args
