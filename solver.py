@@ -41,17 +41,17 @@ def solve_puzzle(start_state, strategy):
     elif strategy == 'ucost':
         return search_obj.UCS_solution()
     elif strategy == 'greedy-h1':
-        return search_obj.Greedy_solution(type='h1')
+        return search_obj.Greedy_solution(h='h1')
     elif strategy == 'greedy-h2':
-        return search_obj.Greedy_solution(type='h2')
+        return search_obj.Greedy_solution(h='h2')
     elif strategy == 'greedy-h3':
-        return search_obj.Greedy_solution(type='h3')
+        return search_obj.Greedy_solution(h='h3')
     elif strategy == 'astar-h1':
-        return search_obj.Astar_solution(type='h1')
+        return search_obj.Astar_solution(h='h1')
     elif strategy == 'astar-h2':
-        return search_obj.Astar_solution(type='h2')
+        return search_obj.Astar_solution(h='h2')
     elif strategy == 'astar-h3':
-        return search_obj.Astar_solution(type='h3')
+        return search_obj.Astar_solution(h='h3')
     else:
         print("strategy not found")
 
