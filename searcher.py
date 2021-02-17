@@ -123,7 +123,7 @@ class Searcher():
                 'expanded_count': 0,
                 }
         """
-        
+        pass
     def Greedy_solution(self, h):
         """ Solution method
         
