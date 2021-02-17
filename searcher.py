@@ -6,7 +6,6 @@ class Searcher():
         self.start_state = start_state
         self.goal_state = goal_state
         self.frontier = PriorityQueue()
-        self.frontier_count = 0
         self.explored_set = set()
         # dictionary mapping a parent state to a tuple of the form: (str: move that it took to get to the key, EightPuzzleBoard: the state before it)
         # {parent_state: ("up | down | left | right", child_state)}
@@ -78,7 +77,7 @@ class Searcher():
         return {
             'path': path,
             'path_cost': path_cost,
-            'frontier_count': self.frontier_count,
+            'frontier_count': len(self.frontier) + len(self.explored_set),
             'expanded_count': len(self.explored_set),
            }
     def BFS_solution(self):
@@ -94,7 +93,6 @@ class Searcher():
         """
         priority_num = 0
         self.frontier.add(self.start_state, priority=priority_num)
-        self.frontier_count += 1
 
         while len(self.frontier) != 0:
             state = self.frontier.pop()
@@ -109,8 +107,7 @@ class Searcher():
                         priority_num += 1
                         self.frontier.add(successor[1], priority=priority_num)
                         self.predecessor_dict[successor[1]] = (successor[0], state)
-                        self.frontier_count += 1
-        return {'frontier_count' : self.frontier_count, 'expanded_count' : len(self.explored_set)}
+        return {'frontier_count' : len(self.frontier) + len(self.explored_set), 'expanded_count' : len(self.explored_set)}
     def UCS_solution(self):
         """ Solution method
 
@@ -122,7 +119,6 @@ class Searcher():
                 'expanded_count': 0,
                 }
         """
-        pass
     def Greedy_solution(self, h):
         """ Solution method
         
@@ -137,7 +133,6 @@ class Searcher():
                 }
         """
         self.frontier.add(self.start_state, priority=0)
-        self.frontier_count += 1
 
         while len(self.frontier) != 0:
             state = self.frontier.pop()
@@ -164,4 +159,3 @@ class Searcher():
                 'expanded_count': 0,
                 }
         """
-        pass
