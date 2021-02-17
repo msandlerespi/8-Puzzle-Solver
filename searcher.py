@@ -24,23 +24,23 @@ class Searcher():
         heuristic = 0
         if h == "h1":
         #h1 = # of misplaced tiles
-            for i in range(10):
-            # Goes through 0-9 and compares the position of that number on the state arg vs the goal state (if it doesnt match, then the heuristic value increments by 1)
-                if self.goal_state.find(i) != state.find(i):
+            for i in range(9):
+            # Goes through 0-8 and compares the position of that number on the state arg vs the goal state (if it doesnt match, then the heuristic value increments by 1)
+                if self.goal_state.find(str(i)) != state.find(str(i)):
                     heuristic += 1
         elif h == "h2":
         #h2 = the sum of the distances of the tiles from their goal positions
-            for i in range (10):
-            # Goes through 0-9 and subtracts the coordinates of the state arg with the coordinates of the goal state (then adds the difference to the heuristic value) 
-                goal_coor = self.goal_state.find(i)
-                state_coor = state.find(i)
+            for i in range (9):
+            # Goes through 0-8 and subtracts the coordinates of the state arg with the coordinates of the goal state (then adds the difference to the heuristic value) 
+                goal_coor = self.goal_state.find(str(i))
+                state_coor = state.find(str(i))
                 heuristic += abs(state_coor[0] - goal_coor[0]) + abs(state_coor[1] - goal_coor[1])
         else:
         #h3 = modified version of h2 (takes into account transition costs)
-            for i in range (10):
+            for i in range (9):
             # Same has h2, but multiplies the difference by i^2 before adding it to the heuristic value
-                goal_coor = self.goal_state.find(i)
-                state_coor = state.find(i)
+                goal_coor = self.goal_state.find(str(i))
+                state_coor = state.find(str(i))
                 heuristic += i * i * (abs(state_coor[0] - goal_coor[0]) + abs(state_coor[1] - goal_coor[1]))
         return heuristic
     def _get_cost(self, predecessor, successor):
@@ -73,7 +73,6 @@ class Searcher():
             path.append(previous_node) # tuple(str of the move that it took to get to cur_node, cur_node)
             path_cost += self._get_cost(predecessor_info[1], cur_node)
             cur_node = predecessor_info[1]
-        path_cost += self._get_cost(self.predecessor_dict.get(cur_node)[1], cur_node) 
         path.append(("", cur_node))
         path.reverse()
         return {
