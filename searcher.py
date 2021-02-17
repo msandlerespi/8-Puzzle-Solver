@@ -144,8 +144,7 @@ class Searcher():
                 if (successor[1] not in self.frontier) and (successor[1] not in self.explored_set):
                     self.frontier.add(successor[1], priority=self._get_heuristic(successor[1], h))
                     self.predecessor_dict[successor[1]] = (successor[0], state)
-                    self.frontier_count += 1    
-        return {'frontier_count' : self.frontier_count, 'expanded_count' : len(self.explored_set)}
+        return {'frontier_count' : len(self.frontier) + len(self.explored_set), 'expanded_count' : len(self.explored_set)}
     def Astar_solution(self, h):
         """ Solution method
          
