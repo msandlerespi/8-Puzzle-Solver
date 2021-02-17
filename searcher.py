@@ -124,7 +124,7 @@ class Searcher():
                 }
         """
         
-    def Greedy_solution(self, type):
+    def Greedy_solution(self, h):
         """ Solution method
         
         Args
@@ -137,7 +137,7 @@ class Searcher():
                 'expanded_count': 0,
                 }
         """
-        self.frontier.add(self.start_state, priority=priority_num)
+        self.frontier.add(self.start_state, priority=0)
         self.frontier_count += 1
 
         while len(self.frontier) != 0:
