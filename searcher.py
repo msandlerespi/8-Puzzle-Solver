@@ -46,7 +46,8 @@ class Searcher():
         """ Cost function -> calculates cost between a predeccessor and its successor
 
         Args:
-            state: EightPuzzleBoard (the state that will get its weight calculated) 
+            predecessor: EightPuzzleBoard (the initial state)
+            successor: EightPuzzleBoard (the state being moved to)
         Returns:
             int (weight value)
         """
@@ -72,7 +73,7 @@ class Searcher():
             path.append(previous_node) # tuple(str of the move that it took to get to cur_node, cur_node)
             path_cost += self._get_cost(predecessor_info[1], cur_node)
             cur_node = predecessor_info[1]
-        path.append(("", cur_node))
+        path.append(("start", cur_node))
         path.reverse()
         return {
             'path': path,
@@ -119,6 +120,27 @@ class Searcher():
                 'expanded_count': 0,
                 }
         """
+        self.frontier.add(self.start_state, priority=0)
+        # converted the key from an EightPuzzleBoard obj to a str, I think it helps with time complexity 
+        shortest_known_path = {str(self.start_state) : 0} # dict with {str(EightBoardPuzzle) : path len}
+
+        while len(self.frontier) !=  0:
+            state = self.frontier.pop()
+            if state == self.goal_state:
+                return self._get_result()
+            self.explored_set.add(state)
+            for successor in state.successors().items():
+            # successor is tuple in the form (move: str, successor: EightBoardPuzzle)
+                cost_so_far = shortest_known_path[str(state)] + self._get_cost(state, successor[1])
+                shortest_known_path[str(successor[1])] = cost_so_far
+                if (successor[1] not in self.frontier) and (successor[1] not in self.explored_set):
+                    self.frontier.add(successor[1], priority=cost_so_far)
+                    self.predecessor_dict[successor[1]] = (successor[0], state)
+                elif (successor[1] in self.frontier) and (self.frontier.get(successor[1]) > cost_so_far):
+                    self.frontier.remove(successor[1])
+                    self.frontier.add(successor[1], priority=cost_so_far)
+                    self.predecessor_dict[successor[1]] = (successor[0], state)
+        return {'frontier_count' : len(self.frontier) + len(self.explored_set), 'expanded_count' : len(self.explored_set)}
     def Greedy_solution(self, h):
         """ Solution method
         
@@ -139,7 +161,7 @@ class Searcher():
             if state == self.goal_state:
                 return self._get_result()
             self.explored_set.add(state)
-            for successor in state.successors().items():
+            for successor in state.successors().items():        
             # successor is tuple in the form (move: str, successor: EightBoardPuzzle)
                 if (successor[1] not in self.frontier) and (successor[1] not in self.explored_set):
                     self.frontier.add(successor[1], priority=self._get_heuristic(successor[1], h))
@@ -158,3 +180,24 @@ class Searcher():
                 'expanded_count': 0,
                 }
         """
+        self.frontier.add(self.start_state, priority=0)
+        # converted the key from an EightPuzzleBoard obj to a str, I think it helps with time complexity 
+        shortest_known_path = {str(self.start_state) : 0} # dict with {str(EightBoardPuzzle) : path len}
+
+        while len(self.frontier) !=  0:
+            state = self.frontier.pop()
+            if state == self.goal_state:
+                return self._get_result()
+            self.explored_set.add(state)
+            for successor in state.successors().items():
+            # successor is tuple in the form (move: str, successor: EightBoardPuzzle)
+                cost_so_far = shortest_known_path[str(state)] + self._get_cost(state, successor[1]) + self._get_heuristic(successor[1], h)
+                shortest_known_path[str(successor[1])] = cost_so_far 
+                if (successor[1] not in self.frontier) and (successor[1] not in self.explored_set):
+                    self.frontier.add(successor[1], priority=cost_so_far)
+                    self.predecessor_dict[successor[1]] = (successor[0], state)
+                elif (successor[1] in self.frontier) and (self.frontier.get(successor[1]) > cost_so_far):
+                    self.frontier.remove(successor[1])
+                    self.frontier.add(successor[1], priority=cost_so_far)
+                    self.predecessor_dict[successor[1]] = (successor[0], state)
+        return {'frontier_count' : len(self.frontier) + len(self.explored_set), 'expanded_count' : len(self.explored_set)}
