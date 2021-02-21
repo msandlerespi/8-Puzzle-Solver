@@ -142,6 +142,7 @@ class Searcher():
                     self.frontier.add(successor[1], priority=cost_so_far)
                     self.predecessor_dict[successor[1]] = (successor[0], state)
         return {'frontier_count' : len(self.frontier) + len(self.explored_set), 'expanded_count' : len(self.explored_set)}
+
     def Greedy_solution(self, h):
         """ Solution method
         
@@ -192,7 +193,7 @@ class Searcher():
             self.explored_set.add(state)
             for successor in state.successors().items():
             # successor is tuple in the form (move: str, successor: EightBoardPuzzle)
-                cost_so_far = shortest_known_path.get(str(state)) + self._get_cost(state, successor[1]) + self._get_heuristic(successor[1], h)
+                cost_so_far = shortest_known_path.get(str(state)) + self._get_cost(state, successor[1]) + self._get_heuristic(successor[1], h) - self._get_heuristic(state, h)
                 if (successor[1] not in self.frontier) and (successor[1] not in self.explored_set):
                     shortest_known_path[str(successor[1])] = cost_so_far 
                     self.frontier.add(successor[1], priority=cost_so_far)
