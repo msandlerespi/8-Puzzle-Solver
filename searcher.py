@@ -163,7 +163,7 @@ class Searcher():
             if state == self.goal_state:
                 return self._get_result()
             self.explored_set.add(state)
-            for successor in state.successors().items():        
+            for successor in state.successors().items():
             # successor is tuple in the form (move: str, successor: EightBoardPuzzle)
                 if (successor[1] not in self.frontier) and (successor[1] not in self.explored_set):
                     self.frontier.add(successor[1], priority=self._get_heuristic(successor[1], h))
