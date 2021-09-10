@@ -1,8 +1,3 @@
-Isaac Gebrewolde
-    Loaded tater-tots at Chicken 'n Co first Semester at UMass
-Miguel Sandler-Espinosa
-    I once went to Galleto's in Modesto and had a pork chop with pickled blueberries that was mind-blowing
+8-Puzzle solver using BFS, DFS, Uniform Cost Search, Greedy best-first search (3 different heuristics) and A* (3 different heuristics) 
 
-Everything seems to be working properly as of yet, although greedy search h1 and h2 are returning different
-paths than the ones provided in the example online. We think that this is just due to the variable order at
-play when pushing to the priority queue.
+pdqpq.py and puzz.py are supplied code
